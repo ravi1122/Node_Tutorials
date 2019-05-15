@@ -1,0 +1,1358 @@
+Yammer Videos
+https://www.yammer.com/capgemini.com/#/users/1572839387
+
+Youtube Videos
+https://www.youtube.com/watch?v=cqVRDWKZsLs (CSS Selectors)
+https://www.youtube.com/watch?v=cXlXSkgjOHE (JS Essentials)
+
+
+Development Setup
+-----------------
+Visual Studio Code (Editor)
+https://code.visualstudio.com/docs/?dv=win (MSI)
+https://code.visualstudio.com/docs/?dv=winzip (zip)
+
+Node.js (Platform)
+https://nodejs.org/dist/v8.11.2/node-v8.11.2-x64.msi (MSI)
+https://nodejs.org/dist/v8.11.2/node-v8.11.2-win-x64.zip (ZIP)
+
+SET Environment Variables
+PATH : d:\nodejs
+NODE_PATH : d:\nodejs\node_modules
+
+C:\Users\karmuthu>node -v
+v8.11.2
+
+C:\Users\karmuthu>npm -v
+5.6.0
+
+
+JS Fundamentals
+---------------
+
+hello.js
+========
+console.log('Hi');
+
+:\>node hello.js
+
+primitives.js
+=============
+//In JS 5 Primitives : number,string,boolean,undefined, null
+//Primitives are Immutable
+var numberVar = 5;
+var stringVar = 'capgemini';
+var booleanVar = true;
+var undefinedVar;
+var nullVar = null;
+
+console.log(numberVar);
+console.log(typeof(numberVar)); //number
+console.log(typeof(undefinedVar)); //undefined
+console.log(typeof(nullVar)); //object
+console.log(4=='4');//true
+console.log(4==='4');//=== strict comparsion(false)
+
+/*var i = 5;
+var j = i;
+j = 7; //It wont change i value
+console.log(i);*/
+
+
+var dt = new Date();
+console.log(typeof(dt));
+console.log(dt.constructor.name);
+
+
+object.js
+=========
+//Object in JS can also be called as Associative arrays(It has key and value pair)
+var foo = {};
+
+//Attaching property to the object using dot notation
+foo.id = 108331;
+
+//key or property should be always string value can be any
+//Attaching property to the object using square bracket notation
+foo['name'] = 'Karthik';
+
+//To retrieve the value using dot notation
+console.log(foo.name);
+
+//To retrieve the value using square bracket notation
+console.log(foo['name']); //Recommended
+
+
+//To iterate the properties in an object for..in loop
+for(var prop in foo){
+    console.log('Key : '+prop+ ' Value: '+foo[prop]);
+}
+
+
+arrays.js
+=========
+var numbers = [5,10,15,20];
+console.log(numbers.length);
+
+//To add an item at the last
+numbers.push(25);
+
+//To remove an item from the last
+numbers.pop();
+
+//To remove an item from specific index
+numbers.splice(numbers.indexOf(10),1);
+
+//To update an item at the specific index
+numbers.splice(numbers.indexOf(15),1,100);
+
+console.log(numbers);
+
+functions.js
+------------
+//Named Function (can be reused)
+var addNumbers = function(a,b){
+    return a + b;
+};
+
+console.log(typeof(addNumbers));
+console.log(addNumbers(5,6)); //Invoking the function
+
+
+//Self Invoking Anonymous Function (cannot be reused)
+(function(){
+    console.log('Hi');
+})();
+
+var printNumber = function(n){
+    console.log(n);
+}
+
+//higher order function
+var numbers = [4,87,32,83,3];
+numbers.forEach(printNumber); 
+
+//function returns function
+var add = function(a){
+    return function(b){
+        return a + b;
+    }
+}
+console.log(add(5)(6));
+
+constructor-fn.js
+-----------------
+//ECMASCRIPT 5 doesnt support classes we need to do it with constructor function
+//Constructor function must be in pascal case
+   
+var Employee=function( id, name){
+    this.id = id;
+    this.name = name;
+}
+
+//Creating instance 
+var emp = {id:1,name:'Ganesh'}; 
+var employee01 = new Employee(101,'Karthik'); 
+var employee02 = new Employee(102,'Logith');
+console.log(emp);//Object Literal
+console.log(emp instanceof Employee); //false
+console.log(employee01);//Employee object
+console.log(employee01 instanceof Employee); //true
+
+
+
+deferred-execution.js
+---------------------
+//JavaScript is single threaded - Thread never sleeps
+(function(){
+    console.log("01");
+    console.log("02");
+        setTimeout(function(){
+        console.log("05");
+    },10);
+    //delayed Execution function(function invoked through events will go back to the callback queue)
+    setTimeout(function(){
+        console.log("06");
+    },0);//tick events(in 0 ms it will add into callback queue)
+
+    console.log("03");
+    console.log("04");
+    //for(;;){}
+})();
+
+//Event loop will check for the main stack if it empty it takes the function from the callback queue and put it in the main stack for execution
+
+
+//Timers, User Events, XHR (AJAX) can produce deferred executions
+
+callback-fn.js
+--------------
+//Asynchronous Function 
+var divideNumbers = function (a, b, fn) {
+    //Only way to get the result of deferred execution is by passing a callback function
+    setTimeout(function () {
+        try {
+            if (b === 0)
+                throw 'Cannot divide by zero';
+            //producing results in a delayed manner
+            var result = a / b;
+            fn(null, result);//invoke the callback function once the deferred result is produced and pass the result as an argument
+        }
+        catch (err) {
+            fn(err, null);
+        }
+    }, 1000);
+}
+
+divideNumbers(25, 0, function (err, divideResult) {
+    if (err) {
+        console.log(err);
+    }
+    else {
+        console.log(divideResult);
+    }
+});
+
+
+class-es2015.js
+--------------
+class Foo{
+    //Access specifiers is not supported
+    //Constructor overloading is not supported
+    constructor(id){
+        this.id = id;
+    }
+
+    getDetails(){
+        //console.log('Id = '+this.id);//ES5
+        console.log(`Id = ${this.id}`);//String Interpolation - ES2015
+    }
+}
+
+var fooObj = new Foo(4);
+fooObj.getDetails();
+
+inheritance.js
+----------------
+class Employee{
+    constructor(){
+        console.log('Employee Constructor invoked');
+    }
+}
+
+class Manager extends Employee{
+    constructor(){
+        super();//Call base constructor
+        console.log('Manager Constructor invoked');
+    }
+}
+new Manager();
+
+let-es6.js
+----------
+(function () {
+    let i = 100;
+    if (true) {
+        let i = 1000;
+        console.log(`i value inside the block : ${i}`);
+    }
+    console.log(`i value outside the block : ${i}`);
+})();
+//let keyword maintains the scope
+
+
+arrow-fn-es6.js
+---------------
+//IN ES5
+var add = function (a, b) {
+    return a + b;
+}
+
+//IN ES2015
+var addNumbers = (a, b) => a + b;
+
+//In JS all functions return this(current instance) by default
+/*var Employee = function(){
+    return this;
+}
+console.log(new Employee());*/
+
+//IN ES5 we need to use bind() to bind the outer function instance with inner
+/*(function(){
+    this.counter = 0;
+    setInterval(function(){
+        console.log(`Counter = ${this.counter++}`);
+    }.bind(this),1000);
+})();*/
+
+//arrow function by default it has the binding with the current instance no need to use bind function
+(function(){
+    this.counter = 0;
+    setInterval(()=>{
+        console.log(`Counter = ${this.counter++}`);
+    },1000);
+})();
+
+spread-rest-es6.js
+------------------
+var sample = (arg,...args)=>{ //REST in a array
+    console.log(arg);
+    console.log(args);
+    
+}
+var numbers = [10,20,30,40];
+sample(5,...numbers);//spread the data from the array
+
+
+clone-es6.js
+------------
+//Immutables
+/*var i = 5;
+var j = i; //new copy (it always produce a new state. it is not refering the older state)
+j = 6;
+console.log(i)
+*/
+
+//Mutable
+/*var foo = {i:5};
+var bar = foo;//creates reference (it wont produce a new state. it is refering the older state)
+bar.i = 10;
+console.log(foo);*/
+
+//To Clone object use object.assign()
+var employee = {id:1,name:'Karthik'};
+//creates a new state
+var clonedEmployee = Object.assign({},employee);
+console.log(clonedEmployee.name = 'Logith');
+console.log(clonedEmployee);
+console.log(employee);
+
+
+//To Clone collection use spread operator
+//Arrays are Mutables
+var numbers = [1,2,3];
+//var clonedNumbers = numbers;(It just create the reference)
+var clonedNumbers = [...numbers];
+clonedNumbers[0] = 100;
+console.log(clonedNumbers);
+console.log(numbers)
+
+var firstArray = [10,20,30];
+var secondArray = [40,50,60];
+//Creates a new state by combining two arrays
+var targetArray = [...firstArray,...secondArray];
+console.log(targetArray);
+
+
+promise.js
+----------
+var promiseObj = new Promise(function(resolve,reject){
+    resolve(5);
+    //reject('Some Error Occured');
+});
+
+promiseObj.then(function(data){
+    console.log(`Promise Resolved : ${data}`);
+},function(err){
+    console.log(`Promise Rejected: ${err}`);
+});
+
+
+
+promise-usage.js
+----------------
+var divideNumbers = function (a, b) {
+    return new Promise((resolve, reject) => {
+        setTimeout(function () {
+            try {
+                if (b === 0)
+                    throw 'Cannot divide by zero';
+                //producing results in a delayed manner
+                var result = a / b;
+                resolve(result);
+            }
+            catch (err) {
+                reject(err);
+            }
+        }, 1000);
+    });
+}
+
+/*divideNumbers(25, 5).then((result) => {
+    console.log(`Divide Result : ${result} `);
+}, (err) => {
+    console.log(`Error : ${err} `);
+});*/
+
+
+divideNumbers(25, 5).then((result) => {
+    console.log(`Divide Result : ${result} `);
+}).catch((err) => {
+    console.log(`Error : ${err} `);
+});
+
+modules.js
+----------
+//To avoid Naming Collisions
+//TO organize the logically related stuff together
+
+//IIFE : Immediately Onvoking Function Expression
+/*var i = (function(){
+    return 5;
+})();
+console.log(typeof(i));*/
+
+var Calculator = (() => {
+
+    var _add = (a, b) => a + b;
+    var _multiply = (a, b) => a * b;
+
+    return {
+        add: _add,
+        multiply: _multiply
+    }
+})();
+
+
+console.log(Calculator.add(5,6));
+console.log(Calculator.multiply(5,6));
+
+
+Node Fundamentals
+*****************
+Nodejs is a platform to run JavaScript programs. It is fully made up of modules. It supports 3 types of modules
+
+Inbuilt modules
+User defined Modules
+Third Party Modules(npmjs.com which can downloaded via node package manager[NPM])
+
+
+Inbuilt modules Documentation : https://nodejs.org/dist/latest-v8.x/docs/api/
+
+
+os-path-inbuilt-modules.js
+------------------------
+const os = require('os');
+const path = require('path');
+
+console.log(os.hostname());//Gives System Name
+console.log(path.join(__dirname,'index.html')); //Create a Path
+
+
+fs-inbuilt-module.js
+---------------------
+const fs = require('fs');
+const path = require('path');
+
+//Reading the contents of demo.txt in Synchronous way
+/*var filePath = path.join(__dirname,'demo.txt');
+console.log('Started Reading...');
+var contents = fs.readFileSync(filePath,{encoding:'utf-8'});
+console.log(contents);
+console.log('Completed Reading...');*/
+
+//Reading the contents of demo.txt in Asynchronous way
+var filePath = path.join(__dirname,'demo.txt');
+fs.readFile(filePath,{encoding:'utf-8'},function(err,data){
+    if(err){
+        console.error(err);
+        
+    }
+    else{
+        console.log('Started Reading...');
+        console.log(data);
+        console.log('Completed Reading...');
+    }
+});
+
+events-inbuilt-module.js
+------------------------
+const EventEmitter = require('events');
+
+class AppEventEmitter extends EventEmitter{
+   
+}
+
+const appEmitter = new AppEventEmitter();
+
+//Creating an event and assigning listener function to it
+appEmitter.addListener('cgEvent',()=>{
+    console.log('cgEvent Occured');
+});
+
+//Triggering the Custom Event
+setTimeout(function(){
+    appEmitter.emit('cgEvent');
+},4000);
+
+var listenerFn01 = (args)=>{
+    console.log(`customEvent occured with listenerFn01:${args}`);
+}
+
+var listenerFn02 = (args)=>{
+    console.log(`customEvent occured with listenerFn02:${args}`);
+}
+
+//Hooking up the Listener Functions to an event(Subscribing)
+appEmitter.addListener('customEvent',listenerFn01);
+appEmitter.on('customEvent',listenerFn02);
+
+//Remove a Listener (unsubscribing)
+appEmitter.removeListener('customEvent',listenerFn01);
+
+//Remove all listeners
+appEmitter.removeAllListeners('customEvent');
+
+//Trigger the Custom Event
+appEmitter.emit('customEvent','passing data to args');
+
+
+fs-streams-pipes.js
+-------------------
+const fs = require('fs');
+/*
+var readStream = fs.createReadStream('demo.txt',{
+    encoding:'utf-8',
+    highWaterMark:50 //Specifying the Chunk size(50 bytes). Default 16 KB
+});
+
+var writeStream = fs.createWriteStream('demo-copy.txt',{
+    encoding:'utf-8'
+});
+
+
+//This Listener will get triggered once the file is opened for reading
+readStream.on('open',()=>{
+    console.log('File Opened for Reading / Copying ...');
+});
+
+//This Listener will get triggered once the file it started and continue the  reading
+readStream.on('data',(chunk)=>{
+    console.log('Reading...');
+    //Reading and printing it in console
+    console.log(chunk);
+    console.log('Copying...');
+     //Reading and writing it in demo-copy.txt
+    writeStream.write(chunk.replace('a','A'));
+});
+
+//This Listener will get triggered once the file completed  its reading / it reached EOF
+readStream.on('close',()=>{
+    console.log('Completed Reading / Copied');
+});*/
+
+//Using Pipes
+
+var readStream = fs.createReadStream('demo.txt',{
+    encoding:'utf-8',
+    highWaterMark:50 //Specifying the Chunk size(50 bytes). Default 16 KB
+});
+
+var writeStream = fs.createWriteStream('demo-copy.txt',{
+    encoding:'utf-8'
+});
+
+console.log('copying...');
+//Pipe readable stream into writable stream
+readStream.pipe(writeStream);
+console.log('copied...');
+
+
+
+http-inbuilt-module.js
+----------------------
+//*Ryan Dahl inventor of Node.js created the inbuilt modules which serves with core implementation*/
+const http = require('http');
+
+//req: HTTP Request readable stream
+//res: HTTP Response writable stream
+var cws = http.createServer((req, res) => {
+    console.log(res.socket.remoteAddress);//To get the remote address
+    if (req.url == '/home') {
+        res.write('<h1>Welcome to Home Page</h1>');
+        res.end();//Closing the Stream
+    } else {
+        res.write('<h1>Welcome to Capgemini Web Server</h1>');
+        res.end();//Closing the Stream
+    }
+});
+
+cws.listen(3000, '127.0.0.1', () => {
+    console.log(`Web server listening on port 3000 at localhost. 
+    Press CTRL + C to stop the server`);
+});
+
+
+
+calculator.js
+--------------
+class Calculator{
+    add(a,b){
+        return a + b;
+    }
+    multiply(a,b){
+        return a * b;
+    }
+}
+module.exports = Calculator;
+
+calculator-userdefined.js
+-------------------------
+const Calculator = require('./calculator');//Relative Reference for inbuilt modules
+var calc = new Calculator();
+console.log(calc.add(5,6));
+console.log(calc.multiply(5,6));
+console.log(calc.multiply(5,6));
+
+To set the proxy:
+----------------
+>npm config set http-proxy http://blrproxy.igate.com:8080
+>npm config set https-proxy http://blrproxy.igate.com:8080
+
+
+
+Third Party Modules
+-------------------
+Node has a vibrant community who develops lot of utilities as Third party modules and put it in the repository (npmjs.com) we can install those packages using npm - node package manager
+
+3rd party Modules can be installed as Global Module or Project module
+
+Global Module : It can used by any of the Node projects in that system.
+
+Syntax:
+
+npm install -g <packagename>
+
+
+1. rimraf(It is used to delete the files and subfolders)
+
+:\> npm install -g rimraf 
+
+D:\Users\karmuthu\Desktop\node\node-fundamentals>mkdir test
+D:\Users\karmuthu\Desktop\node\node-fundamentals>rimraf test
+
+
+2. http-server (It will create a http-server and share the current folder files via http)
+
+:\> npm install -g http-server 
+
+D:\Users\karmuthu\Desktop\node\node-fundamentals>http-server -p 3000
+Starting up http-server, serving ./
+Available on:
+  http://10.51.92.150:3000
+  http://10.51.120.19:3000
+  http://127.0.0.1:3000
+Hit CTRL-C to stop the server
+
+3. typescript (will compiled the code from ES2015 to ES5)
+
+:\> npm install -g typescript
+
+foo.ts
+------
+var str:string = 'Using TypeScript we can JS Strongly Typed';
+
+var demo = ()=>'Typescript converts ES2015 to ES5';
+
+class Employee{}
+class Manager extends Employee {}
+
+
+D:\Users\karmuthu\Desktop\node\node-fundamentals>tsc foo.ts
+
+It will create foo.js(ES5)
+
+
+
+Project Module:
+---------------
+If the module is installed as a project module it can be used only by that project which stores the modules in node_modules folder in root of your project.
+
+Before installing the modules as a project module, we need to create package.json file which is used to store the details of the packages installed in the current project
+
+To create package.json file : 
+npm init -y 
+
+(-y : force creation otherwise it will go via questionarie to create package.json)
+
+Project Save Dependency
+-----------------------
+Installing project module as Project save dependency (developement and production)and add an entry in package.json under dependencies section
+
+npm install -S <packagename>
+
+npm install -S connect
+
+package.json
+------------
+"dependencies": {
+    "connect": "^3.6.6"
+  }
+
+Project Developer Dependency
+----------------------------
+
+Installing project module as developer dependency(only developement it is not required in production) and add an entry in package.json under devDependencies section
+
+npm install -D <packagename>
+
+npm install -D chai
+
+package.json
+------------
+"devDependencies": {
+    "chai": "^4.1.2"
+  }
+
+To uninstall the package :
+-------------------------
+Syntax:
+npm uninstall <switch> <packagename>
+
+npm uninstall -g rimraf : It will remove the global module
+
+npm uninstall -S connect : It will remove the project module and delete the details from dependencies section of package.json
+
+npm uninstall -D chai : It will remove the project module and delete the details from devDependencies section of package.json
+
+To install all the packages which mentioned in package.json
+
+:\> npm install
+
+
+The package.json file is the NPM Configuration File; it basically contains a list of NPM packages that the developer want to be restored before the project starts. NPM (shortcode for Node Package Manager)
+
+Packages get downloaded in the /node_modules/ folder within our project directory
+
+
+To create package.json file : npm init -y (-y force creation avoiding wizard)
+To install third party module as a global module : npm install -g <packagename>
+To install third party module as a project module as a dependency : npm install -S <packagename>
+To install third party module as a project module as a developer dependency : npm install -D <packagename>
+To uninstall third party module : npm uninstall -D <packagename>
+To install specific version : npm install <package>@version
+
+package.json symbols:
+----------------------
+version : Must match version exactly
+
+>version :  Must be greater than version
+
+~version :  "Approximately equivalent to version" (A value of "~1.1.4" will match all 1.1.x versions, excluding 1.2.0, 1.0.x, and so on)
+
+^version :  "Compatible with version"  (A value of "^1.1.4" will match everything above 1.1.4, excluding 2.0.0 and above)
+
+Note:
+
+package.json has “^” and “~” versioning mechanism. Now suppose in your package.json, you have mentioned "jquery": "^3.1.0"and Jquery has a new version “3.2.1”. So in actual, it will install or in other words, LOCK DOWN to “3.2.1”.
+
+So in package.json, you will have “^3.1.0”, but actually you will be using “3.2.1”. This entry of actual version is present in “package-lock.json”. So package lock files have the EXACT versions which are used in your code.
+
+
+installing typescript as a project module
+-----------------------------------------
+
+D:\Users\karmuthu\Desktop\node\node-fundamentals>npm install -D typescript
+
+D:\Users\karmuthu\Desktop\node\node-fundamentals>.\node_modules\.bin\tsc foo.ts
+
+D:\Users\karmuthu\Desktop\node\node-fundamentals>.\node_modules\.bin\tsc -v
+Version 2.8.3
+
+
+
+:\> npm install -S bluebird bcryptjs
+
+package.json
+------------
+"dependencies": {
+    "bcryptjs": "^2.4.3",
+    "bluebird": "^3.5.1"
+  }
+  
+  
+callback-fn-bluebird.js
+-----------------------  
+var divideNumbers = (a, b, fn) => {
+    setTimeout(() => {
+        try {
+            if (b === 0)
+                throw 'Cannot divide by zero';
+            var result = a / b;
+            fn(null, result);
+        } catch (err) {
+            fn(err, null);
+        }
+    }, 1000);
+}
+
+//calling deferred execution method in classical way
+/*divideNumbers(25,5,(err,result)=>{
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log(result);
+    }
+});*/
+
+//bluebird is the 3rd party module which is used to convert callback to promise
+const bluebird = require('bluebird');
+
+//To convert callback to promise
+var divideNumbersPromise = bluebird.promisify(divideNumbers);
+
+//Handling callback as promise
+divideNumbersPromise(25,0).then((result)=>{
+    console.log(`Divide Result : ${result}`);
+}).catch((err)=>{
+    console.log(`Exception Caught : ${err}`);
+});
+
+//converting entire package callbacks to promise
+const fs = bluebird.promisifyAll(require('fs'));
+
+//fs.readFile callback method need to be accessed as readFileAsync
+fs.readFileAsync('demo.txt','utf-8').then((data)=>{
+    console.log(data);
+}).catch((err)=>{
+    console.log(err);
+});
+
+
+encryption.js
+-------------
+const bcyrptjs = require('bcryptjs');
+
+var dataToBeEncrypted = 'Karthik works in Capgemini University as a Senior Manager';
+
+var encryptedData = bcyrptjs.hashSync(dataToBeEncrypted); 
+console.log(encryptedData);
+
+var result = bcyrptjs.compareSync('Karthik works In Capgemini University as a Senior Manager',encryptedData);
+if(result){
+    console.log('Matched');
+}
+else{
+    console.log('Not Matched');
+}
+
+
+connect-demo
+************
+
+
+package.json
+------------
+{
+  "name": "connect-demo",
+  "version": "1.0.0",
+  "description": "Connect demo by Karthik M",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index"
+  },
+  "author": "Karthik M",
+  "license": "ISC",
+  "dependencies": {
+    "connect": "^3.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
+
+
+Install the packages from package.json : npm install
+
+
+index.js
+--------
+
+//connect is built on the top of http module
+//connect is a middleware package
+//we can place middleware in the http pipeline and intercept the HTTP request and response
+const connect = require('connect');
+var app = connect(); //creating the server
+
+app.use('/error', (req, res, next) => {
+    //Handle the exception in middleware
+    try {
+        throw 'some error occured';
+    } catch (err) {
+        next(err);//passing err in next will execute middleware with 4 args
+    }
+});
+
+app.use('/admin', (req, res, next) => {
+    console.log('Admin Logger');
+    next();
+});
+
+app.use('/admin', (req, res, next) => {
+    try {
+        res.end('<h1>Welcome to Admin Page</h1>');//Closing the (Response)WriteStream
+    }
+    catch (err) {
+        next(err);
+    }
+});
+
+app.use('/', (req, res, next) => {
+    if (req.url != '/favicon.ico')
+        console.log('Home Logger');
+    next();
+});
+
+//middleware function which takes 3 arguments req,res,next
+app.use('/', (req, res, next) => {
+    res.write('<h1>Welcome to Connect</h1>');
+    res.end();//Closing the (Response)WriteStream
+    next();//next is optional in this middleware 
+});
+
+//Creating middleware which needs to be executed for error
+//Error Middleware which needs to placed at the last
+//first argument must be err wich recieves the error passed 
+//in the next(err) method
+app.use((err, req, res, next) => {
+    console.log(err);
+    res.end('<h1>Some Error occured it has been reported</h1>')
+});
+
+//Making the server to Listen on port 3000
+app.listen(3000, () => {
+    console.log('Server started listening on port 3000 at localhost');
+});
+
+//http module
+/*const http= require('http');
+var cws = http.createServer((req,res)=>{
+
+});
+cws.listen(3000,()=>{
+    console.log('server started...');
+});*/
+
+
+//Note: To run the program : npm run start
+
+
+
+
+Emmet Code snippets
+--------------------
+! :  Generate HTML 5 boilerplate code
+
+html>head>title{Express}
+
+html>head>title{Express}^body>h1{Express}
+
+p{para-$}*5
+
+p{para}+p#main{para with id}+p.sty{para with class}+p[data-company="capgemini"]{Para with attribute}
+
+table>(tr>td{td-$}*3)*3
+
+
+pug templating syntax
+--------------------
+https://naltatis.github.io/jade-syntax-docs/
+
+
+
+express-demo
+************
+
+package.json
+------------
+{
+  "name": "express-demo",
+  "version": "1.0.0",
+  "description": "Express application framework demo by Karthik",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon"
+  },
+  "author": "Karthik M",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "pug": "^2.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
+
+
+index.js
+--------
+//express package is built on the top of connect
+const express = require('express');
+
+const path = require('path');
+
+//body-parser is a third party middleware which use to parse the request body
+const bodyParser = require('body-parser');
+
+var app = express();
+
+//Creating Routes using express Router
+var root = express.Router();
+var admin = express.Router();
+
+app.set('view engine','pug');
+app.set('views',path.join(__dirname,'views'));
+
+//To parse the data if the content-type is application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended:false}));//extended:true supports nested objects as well
+
+//To parse the data if the content-type is application/json
+app.use(bodyParser.json());
+
+//Root Route
+app.use('/',root);
+//Admin Route
+app.use('/admin',admin);
+
+//POST: http://localhost:3000/admin/person
+//Posting Person details in the request body using POSTMAN
+admin.post('/person',(req,res,next)=>{
+    console.log(req.body);
+    //To access the data posted in request body
+    var personObj = req.body;
+    //Convert javaScript Object to json and send it in response
+    res.json(personObj);
+});
+
+//GET : http://localhost:3000/admin/person/superadmin/mumbai
+admin.get('/person/:role/:city',(req,res,next)=>{
+    //To access the path parameter /:role passed in the URL
+    var role = req.params['role'];
+    //To access the path parameter /:city passed in the URL
+    var city = req.params['city'];
+    
+    res.send(`<h1>Person Role : ${role} City : ${city}</h1>`);
+});
+
+//GET : http://localhost:3000/admin/person?name=Karthik&city=Bangalore
+admin.get('/person',(req,res,next)=>{
+    //To access the query string passed in the URL
+    var query = req.query;//{name:'Karthik,city:'Bangalore'}
+    res.send(`<h1>Person Details Name : ${query.name} City: ${query.city}</h1>`);
+});
+
+//GET : http://localhost:3000/admin/err/
+admin.get('/err',(req,res,next)=>{
+    try {
+        throw 'error occured in admin route';
+    } catch (error) {
+        next({msg:error});
+    }
+});
+
+//GET : http://localhost:3000/admin/
+admin.get('/',(req,res,next)=>{
+    res.send('<h1>Welcome to admin Page</h1>');
+});
+ 
+//GET : http://localhost:3000/
+root.get('/',(req,res,next)=>{
+    //render the pug template resides in views folder
+    res.render('index',{title:'Capgemini',locations:['Bangalore','Chennai','Mumbai']});
+});
+
+//POST : http://localhost:3000/
+root.post('/',(req,res,next)=>{
+    res.write('<h1>Welcome to Home Page using POST Request</h1>');
+    res.send();//To close the responsestream
+});
+
+//PUT : http://localhost:3000/
+root.put('/',(req,res,next)=>{
+    res.write('<h1>Welcome to Home Page using PUT Request</h1>');
+    res.send();//To close the responsestream
+});
+
+//DELETE : http://localhost:3000/
+root.delete('/',(req,res,next)=>{
+    res.write('<h1>Welcome to Home Page using DELETE Request</h1>');
+    res.send();//To close the responsestream
+});
+
+//middleware which catches all routes which executes for error handling
+app.use((err,req,res,next)=>{
+    res.write('<h1>Error Page</h1>');
+    res.write('<hr/>')
+    res.write(`<h2>Exception : ${err.msg}</h2>`);
+    res.send();//To close the responsestream
+});
+
+app.listen(3000,()=>{
+    console.log('Server started listening on port 3000 at localhost');
+});
+
+
+views/index.pug
+---------------
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title #{title}
+    body
+        h1 #{title}
+        hr
+        h2 Locations
+        ul
+            each location in locations
+                li #{location}
+
+
+
+
+MongoDB Installation steps
+--------------------------
+1. Download the mongodb from https://fastdl.mongodb.org/win32/mongodb-win32-i386-2.6.8.zip
+
+2. Extract it to d:\mongodb
+
+3. create mongodstart.bat in d:\mongodb\bin with the following :
+mongod --dbpath=D:\mongodb\data --logpath=D:\mongodb\log\log.txt
+
+4. Add / Edit the environment variable PATH d:\mongodb\bin
+
+5. Create folder named data and log in d:\mongodb and create log.txt in d:\mongodb\log folder
+
+
+To start the MongoDB Service
+----------------------------
+
+:\> mongodstart
+
+
+
+RESTful Services
+----------------
+
+
+restful-demo
+************
+
+
+package.json
+------------
+{
+  "name": "restful-demo",
+  "version": "1.0.0",
+  "description": "RESTful demo by Karthik M",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon"
+  },
+  "author": "Karthik M",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
+
+
+index.js
+-------
+const express = require('express');
+const bodyParser = require('body-parser');
+const _ = require('lodash');//Library to perform Data Manipulation
+
+var app = express();
+
+//creating routes
+var root = express.Router();
+var api = express.Router();
+
+//Parsing Request Body Data using 3rd party middleware body-parser
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+//Creating Routes
+app.use('/', root);
+app.use('/api/guests', api);
+
+guests = [
+    { id: 1, name: 'Karthik', contactNumber: '9986173092' },
+    { id: 2, name: 'Ganesh', contactNumber: '8886173092' },
+    { id: 3, name: 'Logith', contactNumber: '7786173092' },
+];
+
+//To get all the GUEST Details using RESTful Services
+//GET: http://localhost:3000/api/guests/
+api.get('/', (req, res, next) => {
+    res.status(200).json(guests);
+});
+
+//To get a particular GUEST Details using RESTful Services
+//GET: http://localhost:3000/api/guests/100
+api.get('/:id', (req, res, next) => {
+    var id = parseInt(req.params.id);
+
+    //Searching for the guest from the guests Collection using lodash
+    var guestObject = _.find(guests, (guest) => guest.id == id);
+
+    if (guestObject !== undefined) {
+        //If guest found
+        res.status(200).json(guestObject);
+    } else {
+        //If guest not found
+        res.statusMessage = 'Guest Not found';
+        res.status(404).send();
+    }
+});
+
+//To add the guest
+//POST : http://localhost:3000/api/guests
+//SET Request header Content-Type to application/json or application/x-www-form-urlencoded
+api.post('/', (req, res, next) => {
+    //Creating guest object by taking the details from request body which is parsed by body-parser
+    var guest = {
+        id: req.body.id,
+        name: req.body.name,
+        contactNumber: req.body.contactNumber
+    }
+    //Adding the guest details in to the collection
+    guests.push(guest);
+
+    //acknowledging the client that guest added successfully by sending the guest object in the response with statusCode 201
+    //and also sharing the endpoint to access the newly created guest resource in the response location header
+    res.setHeader('location', `${req.originalUrl}/${guest.id}`);
+    res.status(201).json(guest);
+});
+
+//To update the guest
+//PUT : http://localhost:3000/api/guests/1
+//SET Request header Content-Type to application/json or application/x-www-form-urlencoded
+api.put('/:id', (req, res, next) => {
+
+    var id = parseInt(req.params.id);
+
+    //Creating updated guest object by taking the details from request body which is parsed by body-parser
+    var updatedGuest = {
+        id: id,
+        name: req.body.name,
+        contactNumber: req.body.contactNumber
+    }
+
+    //Updating the guest details in to the collection
+    
+    // Find guest index using _.findIndex 
+    var guestIndex = _.findIndex(guests, {id: id});
+    
+    // Replace guest at index using native splice
+    guests.splice(guestIndex, 1, updatedGuest);
+
+    res.statusMessage = 'Guest Updated';
+    res.status(202).send();
+});
+
+//To delete the guest
+//DELETE : http://localhost:3000/api/guests/1
+api.delete('/:id', (req, res, next) => {
+
+    var id = parseInt(req.params.id);
+
+    //Updating the guest details in to the collection
+    
+    // Find guest index using _.findIndex 
+    var guestIndex = _.findIndex(guests, {id: id});
+    
+    // Remove guest at index using native splice
+    guests.splice(guestIndex,1);
+
+    res.statusMessage = 'Guest Deleted';
+    res.status(204).send();
+});
+
+//GET: http://localhost:3000/
+root.get('/', (req, res, next) => {
+    res.send('<h1>Node Guest RESTful Services</h1>');
+});
+
+app.listen(3000, () => {
+    console.log('Server listening on port 3000 at localhost');
+});
+  
+
+MongoDB-Demos
+*************
+npm install -S mongodb@stable
+
+01.js
+-----
+//MongoDB official npm package to connect MongoDB from Node.js
+const mongodb = require('mongodb');
+
+//Class which creates MongoClient
+const MongoClient = mongodb.MongoClient;
+
+//URI to connect MongoDB
+var uri = 'mongodb://localhost/SampleDB';
+
+//Connecting MongoDB Server
+MongoClient.connect(uri,(err,db)=>{
+    if(err){
+        console.log(err);
+        return;
+    }
+    console.log(`Connected to the database: SampleDB`);
+    db.close();
+    console.log(`Connection closed`);
+});
+
+
+02.js
+-----
+//Connecting MongoDB using mongoose ODM(Object Data Mapping) library
+const mongoose = require('mongoose');
+
+var uri = 'mongodb://localhost/SampleDB';
+//Connecting MongoDB with Mongoose using Callback
+mongoose.connect(uri,(err)=>{
+    if(err){
+        console.error(err);
+        return;
+    }
+
+    var connection = mongoose.connection;
+
+    console.log(`Connected to database : ${connection.db.databaseName}`);
+
+    connection.close();
+
+    console.log('Connection Closed');
+});
+
+
+03.js
+-----
+//Connecting MongoDB using mongoose ODM(Object Data Mapping) library
+const mongoose = require('mongoose');
+
+var uri = 'mongodb://localhost/SampleDB';
+
+//Connecting MongoDB with Mongoose using Promise
+mongoose.connect(uri).then(()=>{
+    var connection = mongoose.connection;
+    console.log(`Connected to DB : ${connection.db.databaseName}`);
+    connection.close();
+    console.log(`Connection Closed`);
+},(err)=>{
+    console.log(`Error : ${err}`);
+});

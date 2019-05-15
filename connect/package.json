@@ -1,0 +1,17 @@
+{
+  "name": "connect-demo",
+  "version": "1.0.0",
+  "description": "Connect demo by Karthik M",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index"
+  },
+  "author": "Karthik M",
+  "license": "ISC",
+  "dependencies": {
+    "connect": "^3.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}

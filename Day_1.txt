@@ -1,0 +1,446 @@
+Development Setup
+-----------------
+Visual Studio Code (Editor)
+https://code.visualstudio.com/docs/?dv=win (MSI)
+https://code.visualstudio.com/docs/?dv=winzip (zip)
+
+Node.js (Platform)
+https://nodejs.org/dist/v8.11.2/node-v8.11.2-x64.msi (MSI)
+https://nodejs.org/dist/v8.11.2/node-v8.11.2-win-x64.zip (ZIP)
+
+SET Environment Variables
+PATH : d:\nodejs
+NODE_PATH : d:\nodejs\node_modules
+
+C:\Users\karmuthu>node -v
+v8.11.2
+
+C:\Users\karmuthu>npm -v
+5.6.0
+
+
+JS Fundamentals
+---------------
+
+hello.js
+========
+console.log('Hi');
+
+:\>node hello.js
+
+primitives.js
+=============
+//In JS 5 Primitives : number,string,boolean,undefined, null
+//Primitives are Immutable
+var numberVar = 5;
+var stringVar = 'capgemini';
+var booleanVar = true;
+var undefinedVar;
+var nullVar = null;
+
+console.log(numberVar);
+console.log(typeof(numberVar)); //number
+console.log(typeof(undefinedVar)); //undefined
+console.log(typeof(nullVar)); //object
+console.log(4=='4');//true
+console.log(4==='4');//=== strict comparsion(false)
+
+/*var i = 5;
+var j = i;
+j = 7; //It wont change i value
+console.log(i);*/
+
+
+var dt = new Date();
+console.log(typeof(dt));
+console.log(dt.constructor.name);
+
+
+object.js
+=========
+//Object in JS can also be called as Associative arrays(It has key and value pair)
+var foo = {};
+
+//Attaching property to the object using dot notation
+foo.id = 108331;
+
+//key or property should be always string value can be any
+//Attaching property to the object using square bracket notation
+foo['name'] = 'Karthik';
+
+//To retrieve the value using dot notation
+console.log(foo.name);
+
+//To retrieve the value using square bracket notation
+console.log(foo['name']); //Recommended
+
+
+//To iterate the properties in an object for..in loop
+for(var prop in foo){
+    console.log('Key : '+prop+ ' Value: '+foo[prop]);
+}
+
+
+arrays.js
+=========
+var numbers = [5,10,15,20];
+console.log(numbers.length);
+
+//To add an item at the last
+numbers.push(25);
+
+//To remove an item from the last
+numbers.pop();
+
+//To remove an item from specific index
+numbers.splice(numbers.indexOf(10),1);
+
+//To update an item at the specific index
+numbers.splice(numbers.indexOf(15),1,100);
+
+console.log(numbers);
+
+functions.js
+------------
+//Named Function (can be reused)
+var addNumbers = function(a,b){
+    return a + b;
+};
+
+console.log(typeof(addNumbers));
+console.log(addNumbers(5,6)); //Invoking the function
+
+
+//Self Invoking Anonymous Function (cannot be reused)
+(function(){
+    console.log('Hi');
+})();
+
+var printNumber = function(n){
+    console.log(n);
+}
+
+//higher order function
+var numbers = [4,87,32,83,3];
+numbers.forEach(printNumber); 
+
+//function returns function
+var add = function(a){
+    return function(b){
+        return a + b;
+    }
+}
+console.log(add(5)(6));
+
+constructor-fn.js
+-----------------
+//ECMASCRIPT 5 doesnt support classes we need to do it with constructor function
+//Constructor function must be in pascal case
+   
+var Employee=function( id, name){
+    this.id = id;
+    this.name = name;
+}
+
+//Creating instance 
+var emp = {id:1,name:'Ganesh'}; 
+var employee01 = new Employee(101,'Karthik'); 
+var employee02 = new Employee(102,'Logith');
+console.log(emp);//Object Literal
+console.log(emp instanceof Employee); //false
+console.log(employee01);//Employee object
+console.log(employee01 instanceof Employee); //true
+
+
+
+deferred-execution.js
+---------------------
+//JavaScript is single threaded - Thread never sleeps
+(function(){
+    console.log("01");
+    console.log("02");
+        setTimeout(function(){
+        console.log("05");
+    },10);
+    //delayed Execution function(function invoked through events will go back to the callback queue)
+    setTimeout(function(){
+        console.log("06");
+    },0);//tick events(in 0 ms it will add into callback queue)
+
+    console.log("03");
+    console.log("04");
+    //for(;;){}
+})();
+
+//Event loop will check for the main stack if it empty it takes the function from the callback queue and put it in the main stack for execution
+
+
+//Timers, User Events, XHR (AJAX) can produce deferred executions
+
+callback-fn.js
+--------------
+//Asynchronous Function 
+var divideNumbers = function (a, b, fn) {
+    //Only way to get the result of deferred execution is by passing a callback function
+    setTimeout(function () {
+        try {
+            if (b === 0)
+                throw 'Cannot divide by zero';
+            //producing results in a delayed manner
+            var result = a / b;
+            fn(null, result);//invoke the callback function once the deferred result is produced and pass the result as an argument
+        }
+        catch (err) {
+            fn(err, null);
+        }
+    }, 1000);
+}
+
+divideNumbers(25, 0, function (err, divideResult) {
+    if (err) {
+        console.log(err);
+    }
+    else {
+        console.log(divideResult);
+    }
+});
+
+
+class-es2015.js
+--------------
+class Foo{
+    //Access specifiers is not supported
+    //Constructor overloading is not supported
+    constructor(id){
+        this.id = id;
+    }
+
+    getDetails(){
+        //console.log('Id = '+this.id);//ES5
+        console.log(`Id = ${this.id}`);//String Interpolation - ES2015
+    }
+}
+
+var fooObj = new Foo(4);
+fooObj.getDetails();
+
+inheriatance.js
+----------------
+class Employee{
+    constructor(){
+        console.log('Employee Constructor invoked');
+    }
+}
+
+class Manager extends Employee{
+    constructor(){
+        super();//Call base constructor
+        console.log('Manager Constructor invoked');
+    }
+}
+new Manager();
+
+let-es6.js
+----------
+(function () {
+    let i = 100;
+    if (true) {
+        let i = 1000;
+        console.log(`i value inside the block : ${i}`);
+    }
+    console.log(`i value outside the block : ${i}`);
+})();
+//let keyword maintains the scope
+
+
+arrow-fn-es6.js
+---------------
+//IN ES5
+var add = function (a, b) {
+    return a + b;
+}
+
+//IN ES2015
+var addNumbers = (a, b) => a + b;
+
+//In JS all functions return this(current instance) by default
+/*var Employee = function(){
+    return this;
+}
+console.log(new Employee());*/
+
+//IN ES5 we need to use bind() to bind the outer function instance with inner
+/*(function(){
+    this.counter = 0;
+    setInterval(function(){
+        console.log(`Counter = ${this.counter++}`);
+    }.bind(this),1000);
+})();*/
+
+//arrow function by default it has the binding with the current instance no need to use bind function
+(function(){
+    this.counter = 0;
+    setInterval(()=>{
+        console.log(`Counter = ${this.counter++}`);
+    },1000);
+})();
+
+spread-rest-es6.js
+------------------
+var sample = (arg,...args)=>{ //REST in a array
+    console.log(arg);
+    console.log(args);
+    
+}
+var numbers = [10,20,30,40];
+sample(5,...numbers);//spread the data from the array
+
+
+clone-es6.js
+------------
+//Immutables
+/*var i = 5;
+var j = i; //new copy (it always produce a new state. it is not refering the older state)
+j = 6;
+console.log(i)
+*/
+
+//Mutable
+/*var foo = {i:5};
+var bar = foo;//creates reference (it wont produce a new state. it is refering the older state)
+bar.i = 10;
+console.log(foo);*/
+
+//To Clone object use object.assign()
+var employee = {id:1,name:'Karthik'};
+//creates a new state
+var clonedEmployee = Object.assign({},employee);
+console.log(clonedEmployee.name = 'Logith');
+console.log(clonedEmployee);
+console.log(employee);
+
+
+//To Clone collection use spread operator
+//Arrays are Mutables
+var numbers = [1,2,3];
+//var clonedNumbers = numbers;(It just create the reference)
+var clonedNumbers = [...numbers];
+clonedNumbers[0] = 100;
+console.log(clonedNumbers);
+console.log(numbers)
+
+var firstArray = [10,20,30];
+var secondArray = [40,50,60];
+//Creates a new state by combining two arrays
+var targetArray = [...firstArray,...secondArray];
+console.log(targetArray);
+
+
+promise.js
+----------
+var promiseObj = new Promise(function(resolve,reject){
+    resolve(5);
+    //reject('Some Error Occured');
+});
+
+promiseObj.then(function(data){
+    console.log(`Promise Resolved : ${data}`);
+},function(err){
+    console.log(`Promise Rejected: ${err}`);
+});
+
+
+
+promise-usage.js
+----------------
+var divideNumbers = function (a, b) {
+    return new Promise((resolve, reject) => {
+        setTimeout(function () {
+            try {
+                if (b === 0)
+                    throw 'Cannot divide by zero';
+                //producing results in a delayed manner
+                var result = a / b;
+                resolve(result);
+            }
+            catch (err) {
+                reject(err);
+            }
+        }, 1000);
+    });
+}
+
+/*divideNumbers(25, 5).then((result) => {
+    console.log(`Divide Result : ${result} `);
+}, (err) => {
+    console.log(`Error : ${err} `);
+});*/
+
+
+divideNumbers(25, 5).then((result) => {
+    console.log(`Divide Result : ${result} `);
+}).catch((err) => {
+    console.log(`Error : ${err} `);
+});
+
+modules.js
+----------
+//To avoid Naming Collisions
+//TO organize the logically related stuff together
+
+//IIFE : Immediately Onvoking Function Expression
+/*var i = (function(){
+    return 5;
+})();
+console.log(typeof(i));*/
+
+var Calculator = (() => {
+
+    var _add = (a, b) => a + b;
+    var _multiply = (a, b) => a * b;
+
+    return {
+        add: _add,
+        multiply: _multiply
+    }
+})();
+
+
+console.log(Calculator.add(5,6));
+console.log(Calculator.multiply(5,6));
+
+
+Node Fundamentals
+*****************
+
+
+inbuilt.js
+----------
+const os = require('os');
+const path = require('path');
+
+console.log(os.hostname());//Gives System Name
+console.log(path.join(__dirname,'index.html')); //Create a Path
+
+
+calculator.js
+--------------
+class Calculator{
+    add(a,b){
+        return a + b;
+    }
+    multiply(a,b){
+        return a * b;
+    }
+}
+module.exports = Calculator;
+
+user-defined.js
+---------------
+const Calculator = require('./calculator');//Relative Reference
+var calc = new Calculator();
+console.log(calc.add(5,6));
+console.log(calc.multiply(5,6));
+
+>npm config set https-proxy http://blrproxy.igate.com:8080
+>npm config set https-proxy http://blrproxy.igate.com:8080 
